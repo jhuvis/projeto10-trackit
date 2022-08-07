@@ -6,6 +6,10 @@
 .none{
     display: none;
   }
+
+  a {
+    text-decoration: none;
+  }
   
 
 .criando{

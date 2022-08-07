@@ -1,18 +1,25 @@
-import { Link, useLocation } from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useContext} from 'react';
 import styled from 'styled-components';
-import logo from './TrackIt.png'
 import Dia from './Dia';
 import axios from 'axios';
 import { ThreeDots } from  'react-loader-spinner'
 import Habito from './Habito';
+import Topo from './Topo';
+import UserContext from './UserContext';
+import Bottom from './Bottom';
 
 let ndias = [];
 
 export default function Habitos()
 {
-    const { state } = useLocation();
-    const {id, name, image, email, token} = {...state};
+    const [dados, setDados] = useContext(UserContext);
+
+    let token = localStorage.getItem("token");
+    let image = localStorage.getItem("image");
+    const config = {
+        headers: { Authorization: `Bearer ${token}` }
+    };
+    
 
     const [nao, setNao] = useState("");
     const [mostra, setMostra] = useState("none");
@@ -26,15 +33,16 @@ export default function Habitos()
 
     const [habitos, setHabitos] = useState([]);
 
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
 
     useEffect(() => {
         let isApiSubscribed = true;
+        setDados({...image, image: image});
 
+        
         const requisicao = axios.get(
-          `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, config
+          `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, {
+            headers: { Authorization: `Bearer ${token}` }
+        }
         );
     
         requisicao.then((res) => {
@@ -72,9 +80,10 @@ export default function Habitos()
         }
     }
 
-    function cancelar()
+    function cancelar(e)
     {
-        window.location.reload();    
+        e.preventDefault();
+        window.location.reload();
     }
 
     function semana(index)
@@ -109,10 +118,6 @@ export default function Habitos()
       setCadastrar("");
       setNone("");
 
-      const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
-
     const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", 
     {
 	    name: nome,
@@ -141,10 +146,7 @@ export default function Habitos()
 
     return(
         <>
-        <Topo>
-            <img src={logo}></img>
-            <Perfil src={image}></Perfil>
-        </Topo>
+        <Topo />
         <Corpo>
         <Add>
             <p>Meus hábitos</p>
@@ -190,7 +192,9 @@ export default function Habitos()
         
         />)}
         </Corpo>
+        <Bottom />
         </>
+        
     );
 }
 
@@ -246,27 +250,9 @@ color: #666666;
 margin: 15px;
 `;
 
-const Topo = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
 
-    height: 70px;
-    width: 100%;
 
-    background: #126BA5;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-    img{
-        margin: 15px;
-    }
-`;
 
-const Perfil = styled.img`
-    width: 51px;
-    height: 51px;
-    border-radius: 98.5px;
-`;
 
 const Add = styled.div`
     display: flex;
@@ -276,6 +262,7 @@ const Add = styled.div`
 
     height: 70px;
     width: 100%;
+    margin-top: 80px;
 
     font-family: 'Lexend Deca';
     font-style: normal;

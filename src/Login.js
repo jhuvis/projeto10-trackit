@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import { ThreeDots } from  'react-loader-spinner'
 import "./style.css";
 import track from './track.png';
+import UserContext from './UserContext';
 
 export default function Login()
 {
@@ -14,6 +15,8 @@ export default function Login()
 
   const [cadastrar, setCadastrar] = useState("Entrar");
   const [carrega, setCarregar] = useState("none");
+
+  const [dados, setDados] = useContext(UserContext);
 
   function finalizar(event)
   {
@@ -28,20 +31,16 @@ export default function Login()
         password: senha
       });
   
-      requisicao.then((res) => {navigate("/habitos",
-      {
-        replace: false,
-        state: {
-        id : res.data.id,
-        name : res.data.name,
-        image : res.data.image,
-        email : res.data.email,
-        token : res.data.token,
-      },
-      })
+      requisicao.then((res) => {
+        
+      setDados(res.data);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("image", res.data.image);
+      navigate("/habitos");
   
       setEmail("");
       setSenha("");
+      
   
     });
   
