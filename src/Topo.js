@@ -1,16 +1,14 @@
 import logo from './TrackIt.png'
 import styled from 'styled-components';
-import { useContext } from 'react';
-import UserContext from './UserContext';
 
 export default function Topo()
-{
-    const [dados, setDados] = useContext(UserContext);
+{   
+    let image = localStorage.getItem("image");
 
     return(
         <Top>
             <img src={logo}></img>
-            <Perfil src={dados.image}></Perfil>
+            <Perfil src={image}></Perfil>
         </Top>
     );
 }

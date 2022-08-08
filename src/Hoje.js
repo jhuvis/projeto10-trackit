@@ -12,16 +12,16 @@ export default function Hoje()
     const [dados, setDados] = useContext(UserContext);
 
     let token = localStorage.getItem("token");
-    let image = localStorage.getItem("image");
+
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
-
 
     const semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
 
     const[data, setData] = useState(semana[dayjs().day()] + ", " + dayjs().date() + "/" + (dayjs().month()+1));
     const[concluido, setConcluido] = useState("Nenhum hábito concluído ainda");
+    const[cor, setCor] = useState("#BABABA");
 
     const [habitos, setHabitos] = useState([]);
     const [att, setAtt] = useState(0);
@@ -33,8 +33,6 @@ export default function Hoje()
 
     useEffect(() => {
         let isApiSubscribed = true;
-        setDados({...image, image: image});
-
         
         const requisicao = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today`, config);
     
@@ -44,14 +42,33 @@ export default function Hoje()
             console.log("tome");
             setHabitos(res.data);
             console.log(res.data);
-            if(res.data.length === 0)
+
+            let n = 0;
+            for (let i= 0; i < res.data.length; i++) 
+            {
+              if(res.data[i].done === true)
+              {
+                n++;
+              }          
+            }
+
+            const porcentagem = Math.ceil((n/res.data.length)*100);
+
+            setConcluido(porcentagem + "% dos hábitos concluídos");
+            localStorage.setItem("porcentagem", porcentagem);
+            setDados({...porcentagem, porcentagem: porcentagem});
+            setCor("#8FC549");
+            
+            if((typeof porcentagem === "undefined")||(porcentagem === 0))
             {
                 setConcluido("Nenhum hábito concluído ainda");
+                setCor("#BABABA");
+
+                const porcentagem = 0;
+                localStorage.setItem("porcentagem", porcentagem);
+                setDados({...porcentagem, porcentagem: porcentagem});
             }
-            else
-            {
-                setConcluido("67% dos hábitos concluídos");
-            }
+            
           }
         });
         return () => 
@@ -67,7 +84,7 @@ export default function Hoje()
         <Corpo>
         <Top>
             {data}
-            <p>{concluido}</p>
+            <P core={cor}>{concluido}</P>
         </Top>
         {habitos.map((habito, index) => <Check
                                         id = {habito.id}
@@ -103,9 +120,10 @@ font-weight: 500;
 font-size: 25px;
 color: #126BA5;
     
-    p{
-        color: #BABABA;
-        font-size: 19px;
-        margin-top: 5px;
-    }
 `;
+
+const P = styled.p`
+color: ${props => props.core};
+font-size: 19px;
+margin-top: 5px;
+`

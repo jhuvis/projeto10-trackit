@@ -15,7 +15,7 @@ export default function Habitos()
     const [dados, setDados] = useContext(UserContext);
 
     let token = localStorage.getItem("token");
-    let image = localStorage.getItem("image");
+
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
@@ -36,8 +36,11 @@ export default function Habitos()
 
     useEffect(() => {
         let isApiSubscribed = true;
-        setDados({...image, image: image});
-
+        if(typeof dados.porcentagem === "undefined")
+        {
+            const porcentagem = localStorage.getItem("porcentagem");  
+            setDados({...porcentagem, porcentagem: porcentagem});
+        }
         
         const requisicao = axios.get(
           `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits`, {

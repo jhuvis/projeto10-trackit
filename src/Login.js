@@ -36,6 +36,7 @@ export default function Login()
       setDados(res.data);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("image", res.data.image);
+      localStorage.setItem("porcentagem", 0);
       navigate("/habitos");
   
       setEmail("");

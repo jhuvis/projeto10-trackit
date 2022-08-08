@@ -1,15 +1,36 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import {
+    CircularProgressbar,
+    CircularProgressbarWithChildren,
+    buildStyles
+  } from "react-circular-progressbar";
+  import "react-circular-progressbar/dist/styles.css";
+import { useContext, useState } from 'react';
+import UserContext from './UserContext';
+
+let n = 0;
 
 export default function Bottom()
 {
+    const [dados, setDados] = useContext(UserContext);
     
 
     return(
         
         <Bot>
             <Link to={"/habitos"}><p>Hábitos</p></Link>
-            <Bola><Link to={"/hoje"}><p>Hoje</p></Link></Bola>
+            <Bola><Link to={"/hoje"}><CircularProgressbar
+                                        value={dados.porcentagem}
+                                        text={`Hoje`}
+                                        background
+                                        backgroundPadding={6}
+                                        styles={buildStyles({
+                                            backgroundColor: "#3e98c7",
+                                            textColor: "#fff",
+                                            pathColor: "#fff",
+                                            trailColor: "transparent"
+                                        })}><p>Hoje</p></CircularProgressbar></Link></Bola>
             <Link to={"/"}><p>Histórico</p></Link>
         </Bot>
     );
