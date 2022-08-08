@@ -52,7 +52,6 @@ export default function Habitos()
           if(isApiSubscribed) 
           {
             setHabitos(res.data);
-            console.log(habitos);
             if(res.data.length === 0)
             {
                 setNao("Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!");
@@ -86,7 +85,8 @@ export default function Habitos()
     function cancelar(e)
     {
         e.preventDefault();
-        window.location.reload();
+        setMostra("none");
+        setMais("+");
     }
 
     function semana(index)
@@ -110,7 +110,6 @@ export default function Habitos()
           ndias.splice(i, 1);
         }
 
-        console.log(ndias);
     }
 
     function salvar(event)
@@ -134,6 +133,7 @@ export default function Habitos()
         setCarrega(false);
         setCadastrar("Salvar");
         setNone("none");
+        window.location.reload();
     });
 
     requisicao.catch(() => {
@@ -148,55 +148,53 @@ export default function Habitos()
     }
 
     return(
+        
         <>
         <Topo />
         <Corpo>
-        <Add>
-            <p>Meus hábitos</p>
-            <button onClick={novoHabito}>{mais}</button>
-        </Add>
-        <div className={mostra} >
-        <div><Input
-            type="text"
-            id="habito"
-            value={nome}
-            placeholder="nome do hábito"
-            onChange={(e) => setNome(e.target.value)}
-            disabled={carrega}
-            required
-          /></div>
-        <Dias>
-            {dias.map((d, index) => <Dia 
-                                    dia = {d}
-                                    index = {index}
-                                    semana = {semana}
-                                    desativa = {carrega}
-                                    cinza = {false}  
-                                    key = {index}
-                            />)}
-        </Dias>
-        <Buttons>
-            <button onClick={cancelar} className='b1' disabled={carrega}>Cancelar</button>
-            <div type="submit" disabled={carrega} onClick={salvar} className='b2'>
-                {cadastrar} 
-                <div className={none}><ThreeDots color="#FFFFFF" height={40} width={40} /></div> 
+            <Add>
+                <p>Meus hábitos</p>
+                <button onClick={novoHabito}>{mais}</button>
+            </Add>
+            <div className={mostra}>
+                <div><Input
+                    type="text"
+                    id="habito"
+                    value={nome}
+                    placeholder="nome do hábito"
+                    onChange={(e) => setNome(e.target.value)}
+                    disabled={carrega}
+                    required /></div>
+                <Dias>
+                    {dias.map((d, index) => <Dia
+                        dia={d}
+                        index={index}
+                        semana={semana}
+                        desativa={carrega}
+                        cinza={false}
+                        key={index} />)}
+                </Dias>
+                <Buttons>
+                    <button onClick={cancelar} className='b1' disabled={carrega}>Cancelar</button>
+                    <div type="submit" disabled={carrega} onClick={salvar} className='b2'>
+                        {cadastrar}
+                        <div className={none}><ThreeDots color="#FFFFFF" height={40} width={40} /></div>
+                    </div>
+                </Buttons>
             </div>
-        </Buttons>
-        </div>
-        <P>{nao}</P>
-        {habitos.map((habito, index) => <Habito
-                                        name = {habito.name}
-                                        days = {habito.days}
-                                        semana = {dias}
-                                        id = {habito.id}
-                                        config = {config}
-                                        key = {index}
-        
-        
-        />)}
+            <P>{nao}</P>
+            {habitos.map((habito, index) => <Habito
+                name={habito.name}
+                days={habito.days}
+                semana={dias}
+                id={habito.id}
+                config={config}
+                key={index} />)}
         </Corpo>
         <Bottom />
         </>
+        
+        
         
     );
 }
@@ -212,8 +210,14 @@ const Buttons = styled.div`
 `;
 
 const Corpo = styled.div`
+
 background: #E5E5E5;
-height: 1000px;
+width: 100%;
+min-height: calc(100vh - 70px);
+display: flex;
+flex-direction: column;
+-webkit-box-pack: start;
+margin-bottom: 70px;
 `;
 
 const Dias = styled.div`
@@ -274,7 +278,7 @@ const Add = styled.div`
 
     p{
         color: #126BA5;
-        margin: 15px;
+        margin-left: 15px;
     }
 
     button{
@@ -285,7 +289,7 @@ const Add = styled.div`
         border: none;
 
         color: #FFFFFF;
-        margin: 15px;
+        margin-right: 15px;
         font-size: 26px;
     }
 

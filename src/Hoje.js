@@ -7,6 +7,8 @@ import {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import Check from "./Check";
 
+let relogio = "0";
+
 export default function Hoje()
 {
     const [dados, setDados] = useContext(UserContext);
@@ -19,7 +21,30 @@ export default function Hoje()
 
     const semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
 
-    const[data, setData] = useState(semana[dayjs().day()] + ", " + dayjs().date() + "/" + (dayjs().month()+1));
+    if(dayjs().date() < 10)
+    {
+      if(dayjs().month()+1 < 10)
+      {
+        relogio = (semana[dayjs().day()] + ", 0" + dayjs().date() + "/0" + (dayjs().month()+1));
+      }
+      else
+      {
+        relogio = (semana[dayjs().day()] + ", 0" + dayjs().date() + "/" + (dayjs().month()+1));
+      }
+    }
+    else
+    {
+      if(dayjs().month()+1 < 10)
+      {
+        relogio = (semana[dayjs().day()] + ", " + dayjs().date() + "/0" + (dayjs().month()+1));
+      }
+      else
+      {
+        relogio = (semana[dayjs().day()] + ", " + dayjs().date() + "/" + (dayjs().month()+1));
+      }
+    }
+
+    const[data, setData] = useState(relogio);
     const[concluido, setConcluido] = useState("Nenhum hábito concluído ainda");
     const[cor, setCor] = useState("#BABABA");
 
@@ -39,9 +64,7 @@ export default function Hoje()
         requisicao.then((res) => {
           if(isApiSubscribed) 
           {
-            console.log("tome");
             setHabitos(res.data);
-            console.log(res.data);
 
             let n = 0;
             for (let i= 0; i < res.data.length; i++) 
@@ -104,7 +127,12 @@ export default function Hoje()
 
 const Corpo = styled.div`
 background: #E5E5E5;
-height: 1000px;
+width: 100%;
+min-height: calc(100vh - 70px);
+display: flex;
+flex-direction: column;
+-webkit-box-pack: start;
+margin-bottom: 70px;
 `;
 
 const Top = styled.div`
@@ -113,6 +141,8 @@ flex-direction: column;
 
 margin-top: 95px;
 margin-left: 15px;
+margin-right: 15px;
+margin-bottom: 30px;
 
 font-family: 'Lexend Deca';
 font-style: normal;

@@ -23,16 +23,21 @@ export default function Habito(props)
 
     function deleta()
     {
-        const requisicao = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
+        if(window.confirm("deseja mesmo cancelar?"))
+        {
+            const requisicao = axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`, config);
 
-        requisicao.then(() => 
-    {
-        window.location.reload();  
-    });
+            requisicao.then(() => 
+            {
+                window.location.reload();  
+            });
 
-    requisicao.catch(() => {
-        alert("algo deu errado");
-    })
+            requisicao.catch(() => 
+            {
+                alert("algo deu errado");
+            })
+        }
+        
     }
 
     return(

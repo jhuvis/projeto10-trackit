@@ -6,6 +6,7 @@ import Signin from "./Signin";
 import Habitos from "./Habitos";
 import Hoje from "./Hoje";
 import UserContext from './UserContext';
+import Historico from "./Historico";
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
                     <Route path="/cadastro" element={<Signin />} />
                     <Route path="/habitos" element={<Habitos />} />
                     <Route path="/hoje" element={<Hoje />} />
+                    <Route path="/historico" element={<Historico />} />
                 </Routes>
             </BrowserRouter>
             </Body>

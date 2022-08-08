@@ -70,7 +70,6 @@ export default function Check(props)
 
     useEffect(() => {
         setDados({...props}); 
-        console.log("salve");
     }, [cor]);
 
     
@@ -142,8 +141,8 @@ export default function Check(props)
         <Caixa>
             <Texto>
                 <h2>{name}</h2>
-                <div>Sequência atual: <P core={cor3}>{current} {dias}</P></div>
-                <div>Seu recorde: <P core={cor2}>{high} {dias2}</P></div>
+                <div><span>Sequência atual: </span><P core={cor3}> {current} {dias}</P></div>
+                <div><span>Seu recorde: </span><P core={cor2}> {high} {dias2}</P></div>
             </Texto>
             <Lado>
                 <Botao type="submit" back={cor} onClick={toma}>
@@ -168,6 +167,7 @@ display: flex;
 align-items: flex-start;
 justify-content: flex-start;
 flex-direction: column;
+
 
 font-family: 'Lexend Deca';
 font-style: normal;
@@ -197,7 +197,9 @@ padding: 15px;
 
 width: auto;
 height: 94px;
-margin: 15px;
+margin-left: 15px;
+margin-right: 15px;
+margin-bottom: 10px;
 
 background: #FFFFFF;
 border-radius: 5px;

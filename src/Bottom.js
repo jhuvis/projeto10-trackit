@@ -26,12 +26,12 @@ export default function Bottom()
                                         background
                                         backgroundPadding={6}
                                         styles={buildStyles({
-                                            backgroundColor: "#3e98c7",
+                                            backgroundColor: "#52B6FF",
                                             textColor: "#fff",
                                             pathColor: "#fff",
                                             trailColor: "transparent"
                                         })}><p>Hoje</p></CircularProgressbar></Link></Bola>
-            <Link to={"/"}><p>Histórico</p></Link>
+            <Link to={"/Historico"}><p>Histórico</p></Link>
         </Bot>
     );
 }
