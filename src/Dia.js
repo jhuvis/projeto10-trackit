@@ -28,7 +28,6 @@ export default function Dia(props)
     
     function toma()
     {
-        console.log(desativa);
         if(back === "#FFFFFF")
         {
             setBack("#DBDBDB");

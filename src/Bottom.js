@@ -2,14 +2,11 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import {
     CircularProgressbar,
-    CircularProgressbarWithChildren,
     buildStyles
   } from "react-circular-progressbar";
   import "react-circular-progressbar/dist/styles.css";
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import UserContext from './UserContext';
-
-let n = 0;
 
 export default function Bottom()
 {
