@@ -18,7 +18,7 @@ export default function Signin()
 
 function finalizar(event)
 {
-
+    let isApiSubscribed = true;
     event.preventDefault();
     setCarregar("");
     setCadastrar("");
@@ -33,15 +33,17 @@ function finalizar(event)
 
     requisicao.then(() => 
     {
-        navigate("/",
+        if(isApiSubscribed) 
         {
-            replace: false,
-        })
-
-        setFoto("");
-        setNome("");
-        setEmail("");
-        setSenha("");
+            setFoto("");
+            setNome("");
+            setEmail("");
+            setSenha("");
+            navigate("/",
+            {
+                replace: false,
+            })
+        }  
 
     });
 
@@ -51,6 +53,11 @@ function finalizar(event)
         setCarregar("none");
 
     })
+
+    return () => 
+    {
+        isApiSubscribed = false;
+    };
 
 }
 

@@ -82,7 +82,7 @@ export default function Hoje()
             setDados({...porcentagem, porcentagem: porcentagem});
             setCor("#8FC549");
             
-            if((typeof porcentagem === "undefined")||(porcentagem === 0))
+            if((typeof porcentagem === "undefined")||(porcentagem === 0)||(isNaN(porcentagem)))
             {
                 setConcluido("Nenhum hábito concluído ainda");
                 setCor("#BABABA");

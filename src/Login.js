@@ -9,7 +9,6 @@ import UserContext from './UserContext';
 
 export default function Login()
 {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
@@ -17,13 +16,17 @@ export default function Login()
   const [carrega, setCarregar] = useState("none");
 
   const [dados, setDados] = useContext(UserContext);
+  const navigate = useNavigate();
+
 
   function finalizar(event)
   {
-  
+      
+      let isApiSubscribed = true;
       event.preventDefault();
       setCarregar("");
       setCadastrar("");
+      
           
       const requisicao = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
       {
@@ -32,17 +35,17 @@ export default function Login()
       });
   
       requisicao.then((res) => {
-        
-      setDados(res.data);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("image", res.data.image);
-      localStorage.setItem("porcentagem", 0);
-      navigate("/hoje");
-  
-      setEmail("");
-      setSenha("");
-      
-  
+      if(isApiSubscribed) 
+      {
+        setDados(res.data);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("image", res.data.image);
+        localStorage.setItem("porcentagem", 0);
+        setEmail("");
+        setSenha("");
+        navigate("/hoje");
+      }
+
     });
   
       requisicao.catch(() => {
@@ -51,6 +54,11 @@ export default function Login()
           setCarregar("none");
   
       })
+
+      return () => 
+        {
+          isApiSubscribed = false;
+        };
   
   }
 
